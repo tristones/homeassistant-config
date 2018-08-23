@@ -1,0 +1,44 @@
+sensor:
+  - platform: gaodetraffic
+    scan_interval: 350
+    name: 南北高架路_traffic
+    api_key: !secret gaode_api_key
+    road_name: 南北高架路
+    city:  上海
+  - platform: gaodetraffic
+    scan_interval: 350
+    name: 共和新路_traffic
+    api_key: !secret gaode_api_key
+    road_name: 共和新路
+    city:  上海
+  - platform: gaodetraffic
+    scan_interval: 350
+    name: 中环路_traffic
+    api_key: !secret gaode_api_key
+    road_name: 中环路
+    city:  上海
+
+group:
+  gaodetraffic:
+    name: 交通态势
+    view: no
+    icon: mdi:traffic-light
+    entities:
+    - sensor.南北高架路_traffic
+    - sensor.共和新路_traffic
+    - sensor.中环路_traffic
+
+homeassistant:
+  customize:
+    sensor.中环路_traffic:
+      friendly_name: 中环路路况
+      homebridge_hidden: hidden
+      icon: mdi:traffic-light
+    sensor.共和新路_traffic:
+      friendly_name: 共和新路路况
+      homebridge_hidden: hidden
+      icon: mdi:traffic-light
+    sensor.南北高架路_traffic:
+      friendly_name: 南北高架路
+      homebridge_hidden: hidden
+      icon: mdi:traffic-light
