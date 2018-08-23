@@ -1,7 +1,14 @@
-*
 !*.yaml
 !.gitignore
-._customize.yaml
-._configuration.yaml
+downloads/*
+.storage/*
+.cloud/*
+tts/*
+.uuid
+.ios.conf
+.HA_VERSION
+**/._*.yaml
+**/*.pyc
+home-assistant_v2.db
 secrets.yaml
 known_devices.yaml
