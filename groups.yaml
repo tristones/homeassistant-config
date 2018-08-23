@@ -1,0 +1,11 @@
+# tracker_group:
+#   name: Tracker group
+#   entities:
+#     - device_tracker.tristones_iphone
+#     - device_tracker.emily_iphonese
+
+sensors:
+  name: sensors
+  entities:
+    - sensor.jia_quan
+    - sensor.pm25

@@ -1,0 +1,25 @@
+sensor.tristones_iphone6s_battery_level:
+  config_entry_id:
+  name:
+  platform: ios
+  unique_id: level_tristones_iphone6s
+sensor.tristones_iphone6s_battery_state:
+  config_entry_id:
+  name:
+  platform: ios
+  unique_id: state_tristones_iphone6s
+media_player.livingroom:
+  config_entry_id: 4d45e6c0a14947208c633db9be1d9b24
+  name:
+  platform: sonos
+  unique_id: RINCON_949F3E70EF9E01400
+media_player.apple_tv:
+  config_entry_id:
+  name:
+  platform: apple_tv
+  unique_id: 876b184b4c89c4a4ae60f8adfc62a8b53f8a0f4e70e3c6675eba84aff892c89f
+remote.apple_tv:
+  config_entry_id:
+  name:
+  platform: apple_tv
+  unique_id: 876b184b4c89c4a4ae60f8adfc62a8b53f8a0f4e70e3c6675eba84aff892c89f

@@ -1,0 +1,10 @@
+sun.sun:
+  hidden: true
+sensor.tristones_iphone6s_battery_level:
+  hidden: true
+sensor.tristones_iphone6s_battery_state:
+  hidden: true
+sensor.jia_quan:
+  friendly_name: '甲醛'
+# binary_sensor.PIR1:
+#   hidden: true

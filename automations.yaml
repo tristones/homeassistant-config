@@ -1,0 +1,8 @@
+alias: "Update Caiyun Data"
+trigger:
+  - platform: time
+    minutes: '/30'
+    seconds: 0
+action:
+    service: script.turn_on
+    entity_id: script.download_caiyundata
