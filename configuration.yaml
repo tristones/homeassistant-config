@@ -5,30 +5,42 @@ homeassistant:
   elevation: 5
   unit_system: metric
   time_zone: Asia/Shanghai
-
   customize: !include customize.yaml
+  whitelist_external_dirs:
+    - '/config/downloads'
+    - '/tmp'
+    - '/config/downloads/camera/'
+  # packages: 
+  #   gaodetraffic: !include packages/gaodetraffic.yaml
+  #   caiyunweatherse: !include packages/caiyunweatherse.yaml
+  packages: !include_dir_named packages
 
-  packages: 
-    gaodetraffic: !include packages/gaodetraffic.yaml
-    caiyunweatherse: !include packages/caiyunweatherse.yaml
+system_health:
 
 zone:
-  - name: Office
-    latitude: !secret office_latitude
-    longitude: !secret office_longitude
-    radius: 1000
-    icon: mdi:account-multiple
   - name: Home
     latitude: !secret home_latitude
     longitude: !secret home_longitude
     radius: 1000
-    icon: mdi:account-multiple
+    # icon: mdi:account-multiple
 
 device_tracker:
 
 mqtt:
-  broker: core-mosquitto
+  broker: 192.168.2.173
+  port: 1883
+  username: !secret mqtt_user
+  password: !secret mqtt_pass
+  discovery: true
+  # discovery_prefix: homeassistant
 
+xiaomi_aqara:
+  gateways:
+    - mac: 7C49EB84897B
+      key: UFAC9RFMV24R39QF
+    - mac: 7C49EB86104E
+      key: NSCT47U3M3039UKS
+    
 ifttt:
   key: !secret ifttt_key
 # Show links to resources in log and frontend
@@ -41,24 +53,24 @@ frontend:
 config:
 
 http:
-  # Secrets are defined in the file secrets.yaml
   api_password: !secret http_password
-  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-  # base_url: example.duckdns.org:8123
 
-# Checks for available updates
-# Note: This component will send some information about your system to
-# the developers to assist with development of Home Assistant.
-# For more information, please see:
-# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
 updater:
-  # Optional, allows Home Assistant developers to focus on popular components.
-  # include_used_components: true
 
-# Discover some devices automatically
 discovery:
 
 ios:
+
+homekit:
+  filter:
+    include_domains:
+      - alarm_control_panel
+      - light
+      - media_player
+      - switch
+  entity_config:
+    alarm_control_panel.home_alarm:
+      code: 1568
 
 downloader:
   download_dir: downloads
@@ -72,23 +84,106 @@ history:
       - sensor
       - switch
 # View all events in a logbook
-logbook:
-  include:
-    domains:
-      - sensor
-      - switch
-      - media_player
-      - script
+logbook: !include logbook.yaml
 
-media_player livingroom:
-  - platform: sonos
-    hosts:
-      - 192.168.2.92
-      
-#influx backend database
+climate:
+  - platform: saswell
+    username: !secret saswell_user
+    password: !secret saswell_pass
+    scan_interval: 300
+    # devices: 7
+    
 influxdb:
   host: localhost
   port: 8086
+
+camera:
+  - platform: generic
+    name: DaFang3
+    username: !secret dafang_user
+    password: !secret dafang_pass
+    authentication: basic
+    still_image_url: https://192.168.2.165/cgi-bin/currentpic.cgi
+    verify_ssl: false
+    scan_interval: 5
+  - platform: generic
+    name: WestWindow
+    username: !secret hik_user
+    password: !secret hik_pass
+    authentication: digest
+    verify_ssl: false
+    still_image_url: http://192.168.2.2/ISAPI/Streaming/channels/101/picture
+    scan_interval: 5
+  - platform: generic
+    name: AcLocation
+    username: !secret hik_user
+    password: !secret hik_pass
+    authentication: digest
+    verify_ssl: false
+    still_image_url: http://192.168.2.3/ISAPI/Streaming/channels/101/picture
+    scan_interval: 5
+  - platform: generic
+    name: FrontYard
+    username: !secret hik_user
+    password: !secret hik_pass
+    authentication: digest
+    verify_ssl: false
+    still_image_url: http://192.168.2.4/ISAPI/Streaming/channels/101/picture
+    scan_interval: 5
+  - platform: generic
+    name: BackDoor
+    username: !secret hik_user
+    password: !secret hik_pass
+    authentication: digest
+    verify_ssl: false
+    still_image_url: http://192.168.2.5/ISAPI/Streaming/channels/101/picture
+    scan_interval: 5
+  - platform: generic
+    name: KitchenWindow
+    username: !secret hik_user
+    password: !secret hik_pass
+    authentication: digest
+    verify_ssl: false
+    still_image_url: http://192.168.2.6/ISAPI/Streaming/channels/101/picture
+    scan_interval: 5
+  - platform: generic
+    name: EastWall
+    username: !secret hik_user
+    password: !secret hik_pass
+    authentication: digest
+    verify_ssl: false
+    still_image_url: http://192.168.2.7/ISAPI/Streaming/channels/101/picture
+    scan_interval: 5
+  - platform: generic
+    name: LivingRoom
+    username: !secret hik_user
+    password: !secret hik_mainpass
+    authentication: digest
+    verify_ssl: false
+    still_image_url: http://192.168.2.186/ISAPI/Streaming/channels/701/picture
+    scan_interval: 5
+  - platform: generic
+    name: FrontDoor
+    username: !secret hik_user
+    password: !secret hik_mainpass
+    authentication: digest
+    verify_ssl: false
+    still_image_url: http://192.168.2.186/ISAPI/Streaming/channels/801/picture
+    scan_interval: 10
+
+image_processing:
+  # - platform: deepstack_object
+  #   ip_address: 192.168.2.21
+  #   port: 8088
+  #   scan_interval: 20000
+  #   target: person
+  #   source:
+  #     - entity_id: camera.dafang3
+  #       name: deepstack_dafang3
+  #     - entity_id: camera.livingroom
+  #       name: deepstack_livingroom
+  #     - entity_id: camera.frontdoor
+  #       name: deepstack_frontdoor
 
 recorder:
   purge_interval: 2
@@ -105,6 +200,29 @@ panel_custom:
 # Track the sun
 sun:
 
+notify:
+  - platform: group
+    name: iOS
+    services:
+      - service: ios_tristones_iphone6s
+
+alarm_control_panel:
+  - platform: manual
+    name: Home Alarm
+    code: 1568
+    pending_time: 30
+    delay_time: 20
+    trigger_time: 4
+    disarmed:
+      trigger_time: 0
+      delay_time: 0
+    armed_home:
+      pending_time: 0
+      delay_time: 0
+    armed_away:
+      pending_time: 30
+      delay_time: 20
+
 # Weather prediction
 sensor:
   # - platform: yr
@@ -119,36 +237,33 @@ sensor:
     unit_of_measurement: 'μg/m3'
     value_template: '{{ value_json.pm2p5 }}'
 
-binary_sensor:
-  # - platform: mqtt
-    # name: 'PIR1'
-    # state_topic: 'home/433toMQTT'
-    # if the remove the battery cover it send 14331787 code
-    # payload_on: "14331786"
+binary_sensor: !include binary_sensor.yaml
 
-switch:
-  - platform: broadlink
-    name: "broadlink1"
-    host: '192.168.2.152'    
-    mac: '78:0F:77:00:8E:8B'
-    friendly_name: '空气净化器'
-    switches:
-      air_living_on:
-        friendly_name: '空净开关'
-        command_on: 'JgAMAXQ3ESgRDBANEA0OKxANDw4PDRANDyoQDRApECkQDQ8qECkRKBEoESkQDBEoEQwRDBApEQwQDRANEAwRKBEpECkQKRANEAwRDBEMEA0QDRAMEQwQDRANEA0QDBEMDw4QDRANEAwRDBEMEA0QDRAMEQwRDBANECkQDRAMESkQKRApEA0QAAPWdDcRKBEMEQwQDRApEA0QDRAMEQwRKBEMESgRKBEMECkRKBEoESgRKBEMESgRDBEMECkRDBANEA0QDBEMEQwQDRANECkQKRApECkQDRAMEQwRKBEoEQwRDBEMEA0QDRAMEQwRDBANEA0QDBEMEQwQDRANEAwRKBENEAwQKREMEA0QDRAADQUAAAAAAAAAAAAAAAA=' 
-        command_off: 'JgAMAXQ3ESgRDBANEA0OKxANDw4PDRANDyoQDRApECkQDQ8qECkRKBEoESkQDBEoEQwRDBApEQwQDRANEAwRKBEpECkQKRANEAwRDBEMEA0QDRAMEQwQDRANEA0QDBEMDw4QDRANEAwRDBEMEA0QDRAMEQwRDBANECkQDRAMESkQKRApEA0QAAPWdDcRKBEMEQwQDRApEA0QDRAMEQwRKBEMESgRKBEMECkRKBEoESgRKBEMESgRDBEMECkRDBANEA0QDBEMEQwQDRANECkQKRApECkQDRAMEQwRKBEoEQwRDBEMEA0QDRAMEQwRDBANEA0QDBEMEQwQDRANEAwRKBENEAwQKREMEA0QDRAADQUAAAAAAAAAAAAAAAA='
-      air_living_auto:
-        friendly_name: '空净自动'
-        command_on: 'JgAMAXQ3ECkQDQ4PEA0QKRANEQsQDREMECkQDRApDisQDRApECkOKw4rDisQDQ4rDg8ODw4rDg8ODg8ODg8OKw4rDisOKw8ODg8ODw4PDg4PDg4PDg8ODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8PDRANEA0ODw4PDisODg8ODisOKw4rDw4OAAPZdDcQKRANEA0ODw8qEA0PDRANEA0QKRANECkQKRANDisQKRApDisQKQ4PDisODxANECkQDQ4ODw4ODw4PDg8PDRANECkOKxApECoODg8ODg8OKw4PDisODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8ODhANDisOKw4PDg8OKw4PDg8ODg8ADQUAAAAAAAAAAAAAAAA='
-        command_off: 'JgAMAXQ3ECkQDQ4PEA0QKRANEQsQDREMECkQDRApDisQDRApECkOKw4rDisQDQ4rDg8ODw4rDg8ODg8ODg8OKw4rDisOKw8ODg8ODw4PDg4PDg4PDg8ODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8PDRANEA0ODw4PDisODg8ODisOKw4rDw4OAAPZdDcQKRANEA0ODw8qEA0PDRANEA0QKRANECkQKRANDisQKRApDisQKQ4PDisODxANECkQDQ4ODw4ODw4PDg8PDRANECkOKxApECoODg8ODg8OKw4PDisODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8ODhANDisOKw4PDg8OKw4PDg8ODg8ADQUAAAAAAAAAAAAAAAA='
-      air_living_power:
-        friendly_name: '空净强力'
-        command_on: 'JgAMAXM4ECoPDRANDw4OKw4PDg8ODw4ODisPDg4rDisPDg4rDisPKw4rDisODw4rDg4ODw4rDg8ODw4PDg8OKw4rDyoPKg8ODw4ODg4PDg8ODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8ODg4PDg8ODw4PDg4ODw4PDisPDg4PDisPKg8qDw4PAAPXdDgQKQ8ODw0QDQ4rDg8QDQ4PDw0PKw8NDyoRKQ8NDyoQKREpDyoPKg8ODyoPDRANDyoQDQ8ODg8PDg8NDg8PDg4PDisOKw4rDisODw8ODg8OKw8NEA0QDQ8qEA0PDg8ODg4ODw4PDg8ODw4ODg8ODw4PDisODw4PDisOKw4PDg4ODw4ADQUAAAAAAAAAAAAAAAA='
-        command_off: 'JgAMAXM4ECoPDRANDw4OKw4PDg8ODw4ODisPDg4rDisPDg4rDisPKw4rDisODw4rDg4ODw4rDg8ODw4PDg8OKw4rDyoPKg8ODw4ODg4PDg8ODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8ODg4PDg8ODw4PDg4ODw4PDisPDg4PDisPKg8qDw4PAAPXdDgQKQ8ODw0QDQ4rDg8QDQ4PDw0PKw8NDyoRKQ8NDyoQKREpDyoPKg8ODyoPDRANDyoQDQ8ODg8PDg8NDg8PDg4PDisOKw4rDisODw8ODg8OKw8NEA0QDQ8qEA0PDg8ODg4ODw4PDg8ODw4ODg8ODw4PDisODw4PDisOKw4PDg4ODw4ADQUAAAAAAAAAAAAAAAA='
-      ac_living_power:
-        friendly_name: '客厅空调开关'
-        command_on:   'JgBoAMv2FXMWcxV0FTAVdBV0FHQVdBQxFTEWLhV1FDAVMRUxFTAWLxV0FXQWLxUwFTEVMRVzFXQVMBcuFXQVdBR0FXQVMBUwFXQVMRV0FDEVdBQxFTAXchYvFXMVMRVzFTEVcxZzF/YWAA0F'
-        command_off:  'JgBoAMv2FXMWcxV0FTAVdBV0FHQVdBQxFTEWLhV1FDAVMRUxFTAWLxV0FXQWLxUwFTEVMRVzFXQVMBcuFXQVdBR0FXQVMBUwFXQVMRV0FDEVdBQxFTAXchYvFXMVMRVzFTEVcxZzF/YWAA0F'
+switch: !include switch.yaml
+
+# switch:
+#   - platform: broadlink
+#     name: "broadlink1"
+#     host: '192.168.2.152'    
+#     mac: '78:0F:77:00:8E:8B'
+#     friendly_name: '空气净化器'
+#     switches:
+#       air_living_on:
+#         friendly_name: '空净开关'
+#         command_on: 'JgAMAXQ3ESgRDBANEA0OKxANDw4PDRANDyoQDRApECkQDQ8qECkRKBEoESkQDBEoEQwRDBApEQwQDRANEAwRKBEpECkQKRANEAwRDBEMEA0QDRAMEQwQDRANEA0QDBEMDw4QDRANEAwRDBEMEA0QDRAMEQwRDBANECkQDRAMESkQKRApEA0QAAPWdDcRKBEMEQwQDRApEA0QDRAMEQwRKBEMESgRKBEMECkRKBEoESgRKBEMESgRDBEMECkRDBANEA0QDBEMEQwQDRANECkQKRApECkQDRAMEQwRKBEoEQwRDBEMEA0QDRAMEQwRDBANEA0QDBEMEQwQDRANEAwRKBENEAwQKREMEA0QDRAADQUAAAAAAAAAAAAAAAA=' 
+#         command_off: 'JgAMAXQ3ESgRDBANEA0OKxANDw4PDRANDyoQDRApECkQDQ8qECkRKBEoESkQDBEoEQwRDBApEQwQDRANEAwRKBEpECkQKRANEAwRDBEMEA0QDRAMEQwQDRANEA0QDBEMDw4QDRANEAwRDBEMEA0QDRAMEQwRDBANECkQDRAMESkQKRApEA0QAAPWdDcRKBEMEQwQDRApEA0QDRAMEQwRKBEMESgRKBEMECkRKBEoESgRKBEMESgRDBEMECkRDBANEA0QDBEMEQwQDRANECkQKRApECkQDRAMEQwRKBEoEQwRDBEMEA0QDRAMEQwRDBANEA0QDBEMEQwQDRANEAwRKBENEAwQKREMEA0QDRAADQUAAAAAAAAAAAAAAAA='
+#       air_living_auto:
+#         friendly_name: '空净自动'
+#         command_on: 'JgAMAXQ3ECkQDQ4PEA0QKRANEQsQDREMECkQDRApDisQDRApECkOKw4rDisQDQ4rDg8ODw4rDg8ODg8ODg8OKw4rDisOKw8ODg8ODw4PDg4PDg4PDg8ODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8PDRANEA0ODw4PDisODg8ODisOKw4rDw4OAAPZdDcQKRANEA0ODw8qEA0PDRANEA0QKRANECkQKRANDisQKRApDisQKQ4PDisODxANECkQDQ4ODw4ODw4PDg8PDRANECkOKxApECoODg8ODg8OKw4PDisODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8ODhANDisOKw4PDg8OKw4PDg8ODg8ADQUAAAAAAAAAAAAAAAA='
+#         command_off: 'JgAMAXQ3ECkQDQ4PEA0QKRANEQsQDREMECkQDRApDisQDRApECkOKw4rDisQDQ4rDg8ODw4rDg8ODg8ODg8OKw4rDisOKw8ODg8ODw4PDg4PDg4PDg8ODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8PDRANEA0ODw4PDisODg8ODisOKw4rDw4OAAPZdDcQKRANEA0ODw8qEA0PDRANEA0QKRANECkQKRANDisQKRApDisQKQ4PDisODxANECkQDQ4ODw4ODw4PDg8PDRANECkOKxApECoODg8ODg8OKw4PDisODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8ODhANDisOKw4PDg8OKw4PDg8ODg8ADQUAAAAAAAAAAAAAAAA='
+#       air_living_power:
+#         friendly_name: '空净强力'
+#         command_on: 'JgAMAXM4ECoPDRANDw4OKw4PDg8ODw4ODisPDg4rDisPDg4rDisPKw4rDisODw4rDg4ODw4rDg8ODw4PDg8OKw4rDyoPKg8ODw4ODg4PDg8ODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8ODg4PDg8ODw4PDg4ODw4PDisPDg4PDisPKg8qDw4PAAPXdDgQKQ8ODw0QDQ4rDg8QDQ4PDw0PKw8NDyoRKQ8NDyoQKREpDyoPKg8ODyoPDRANDyoQDQ8ODg8PDg8NDg8PDg4PDisOKw4rDisODw8ODg8OKw8NEA0QDQ8qEA0PDg8ODg4ODw4PDg8ODw4ODg8ODw4PDisODw4PDisOKw4PDg4ODw4ADQUAAAAAAAAAAAAAAAA='
+#         command_off: 'JgAMAXM4ECoPDRANDw4OKw4PDg8ODw4ODisPDg4rDisPDg4rDisPKw4rDisODw4rDg4ODw4rDg8ODw4PDg8OKw4rDyoPKg8ODw4ODg4PDg8ODw4PDg4ODw4PDg8ODw4ODg8ODw4PDg8ODg4PDg8ODw4PDg4ODw4PDisPDg4PDisPKg8qDw4PAAPXdDgQKQ8ODw0QDQ4rDg8QDQ4PDw0PKw8NDyoRKQ8NDyoQKREpDyoPKg8ODyoPDRANDyoQDQ8ODg8PDg8NDg8PDg4PDisOKw4rDisODw8ODg8OKw8NEA0QDQ8qEA0PDg8ODg4ODw4PDg8ODw4ODg8ODw4PDisODw4PDisOKw4PDg4ODw4ADQUAAAAAAAAAAAAAAAA='
+#       ac_living_power:
+#         friendly_name: '客厅空调开关'
+#         command_on:   'JgBoAMv2FXMWcxV0FTAVdBV0FHQVdBQxFTEWLhV1FDAVMRUxFTAWLxV0FXQWLxUwFTEVMRVzFXQVMBcuFXQVdBR0FXQVMBUwFXQVMRV0FDEVdBQxFTAXchYvFXMVMRVzFTEVcxZzF/YWAA0F'
+#         command_off:  'JgBoAMv2FXMWcxV0FTAVdBV0FHQVdBQxFTEWLhV1FDAVMRUxFTAWLxV0FXQWLxUwFTEVMRVzFXQVMBcuFXQVdBR0FXQVMBUwFXQVMRV0FDEVdBQxFTAXchYvFXMVMRVzFTEVcxZzF/YWAA0F'
 
 # Text to speech
 tts:
@@ -161,7 +276,11 @@ tts:
 logger:
   default: critical
   logs:
-    homeassistant.components.influxdb: debug
+    homeassistant.components.influxdb: critical
+    homeassistant.components.image_processing: critical
+    homeassistant.core: critical
+    homeassistant.components.media_player: critical
+    homeassistant.components.camera.generic: critical
 
 # Cloud
 cloud:

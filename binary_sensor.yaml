@@ -1,0 +1,47 @@
+  # - platform: mqtt
+  #   name: 'PIR1'
+  #   state_topic: 'home/433toMQTT'
+  #   # if the remove the battery cover it send 14331787 code
+  #   payload_on: "14331786"
+  - platform: hikvision
+    host: 192.168.2.186
+    ssl: false
+    name: nvr
+    username: !secret hik_user
+    password: !secret hik_mainpass
+  # - platform: hikvision
+  #   host: 192.168.2.2
+  #   ssl: false
+  #   name: WestWindow
+  #   username: !secret hik_user
+  #   password: !secret hik_pass
+  # - platform: hikvision
+  #   host: 192.168.2.3
+  #   ssl: false
+  #   name: AcLocation
+  #   username: !secret hik_user
+  #   password: !secret hik_pass
+  # - platform: hikvision
+  #   host: 192.168.2.4
+  #   ssl: false
+  #   name: FrontYard
+  #   username: !secret hik_user
+  #   password: !secret hik_pass
+  # - platform: hikvision
+  #   host: 192.168.2.5
+  #   ssl: false
+  #   name: BackDoor
+  #   username: !secret hik_user
+  #   password: !secret hik_pass
+  # - platform: hikvision
+  #   host: 192.168.2.6
+  #   ssl: false
+  #   name: KitchenWindow
+  #   username: !secret hik_user
+  #   password: !secret hik_pass
+  # - platform: hikvision
+  #   host: 192.168.2.7
+  #   ssl: false
+  #   name: EastWall
+  #   username: !secret hik_user
+  #   password: !secret hik_pass

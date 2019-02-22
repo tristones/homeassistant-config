@@ -1,0 +1,6 @@
+  - platform: mqtt
+    name: xiyifang
+    state_topic: hassmart/switch/hassmart_1key_module_4019A2_1/state
+    command_topic: hassmart/switch/hassmart_1key_module_4019A2_1/set
+    qos: 1
+    retain: false

@@ -6,5 +6,79 @@ sensor.tristones_iphone6s_battery_state:
   hidden: true
 sensor.jia_quan:
   friendly_name: '甲醛'
+sensor.pm2_5:
+  friendly_name: 'pm2.5'
+automation.alarm_away:
+  friendly_name: '离家状态监控'
+automation.alarm_cctv:
+  friendly_name: '全屋夜间监控'
+automation.alarm_cctv_home:
+  friendly_name: '在家状态监控'
+automation.alarm_leak:
+  friendly_name: '漏水报警'
 # binary_sensor.PIR1:
 #   hidden: true
+climate.saswell_10382435cc05169d:
+  friendly_name: '二楼客厅地暖'
+climate.saswell_10382435cc0517ba:
+  friendly_name: '书房地暖'
+climate.saswell_10382435cc0bd732:
+  friendly_name: '工具间地暖'
+climate.saswell_10382435cc0bf000:
+  friendly_name: '主卧地暖'  
+climate.saswell_10382435cc0d0960:
+  friendly_name: '客厅地暖'
+climate.saswell_10382435cc0d0bdb:
+  friendly_name: '小米房间地暖'
+climate.saswell_10382435cc0d1870:
+  friendly_name: '一楼卧室地暖'
+switch.wall_switch_ln_left_158d00024a70dc:
+  friendly_name: '工具间灯'
+switch.wall_switch_ln_right_158d00024a70dc:
+  friendly_name: '后门壁灯'
+switch.Plug_158d00026750cc:
+  friendly_name: '二楼马桶'
+switch.plug_158d000256c7e1:
+  friendly_name: '一楼马桶'
+switch.plug_158d000268db5c:
+  friendly_name: '电磁阀'
+switch.plug_158d00026777e0:
+  friendly_name: '影音室落地灯'
+switch.plug_158d000290e6bd:
+  friendly_name: '钓鱼灯'
+switch.plug_158d00029010e7:
+  friendly_name: '二楼落地灯'
+switch.plug_158d0002532333:
+  friendly_name: '米高梅'
+switch.xiyifang:
+  friendly_name: '洗衣房灯'
+switch.wall_switch_ln_158d000282c662:
+  friendly_name: '衣帽间灯'
+switch.wall_switch_ln_158d0002739695:
+  friendly_name: '书房灯'
+switch.wall_switch_ln_158d000282c182:
+  friendly_name: '二楼射灯'
+switch.wall_plug_158d0002313e54:
+  friendly_name: '主卧插座'
+binary_sensor.water_leak_sensor_158d00023aa627:
+  friendly_name: '二楼台盆漏水'
+binary_sensor.water_leak_sensor_158d00023ea336:
+  friendly_name: '厨房漏水'
+binary_sensor.water_leak_sensor_158d00023ea23b:
+  friendly_name: '二楼卫生间漏水'
+sensor.humidity_158d000245a6e0:
+  friendly_name: '二楼湿度'
+sensor.pressure_158d000245a6e0:
+  friendly_name: '二楼气压'
+sensor.temperature_158d000245a6e0:
+  friendly_name: '二楼温度'
+sensor.illumination_7c49eb84897b:
+  friendly_name: '照度1'
+sensor.illumination_7c49eb86104e:
+  friendly_name: '照度2'
+sensor.humidity_158d0002325270:
+  friendly_name: '一楼湿度'
+sensor.pressure_158d0002325270:
+  friendly_name: '一楼气压'
+sensor.temperature_158d0002325270:
+  friendly_name: '一楼温度'
