@@ -9,7 +9,8 @@ tts/*
 .HA_VERSION
 **/._*.yaml
 **/*.pyc
-www/custom_ui/inkwavemap/*
 home-assistant_v2.db
 secrets.yaml
 known_devices.yaml
+airsonos.xml
+home-assistant.log
