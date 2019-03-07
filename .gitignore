@@ -6,6 +6,7 @@
 tts/*
 .uuid
 .ios.conf
+.homekit.state
 .HA_VERSION
 **/._*.yaml
 __pycache__
