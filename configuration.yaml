@@ -46,12 +46,6 @@ ifttt:
 # Show links to resources in log and frontend
 # introduction:
 
-notify:
-  - name: pushover
-    platform: pushover
-    api_key: !secret pushover_key
-    user_key: !secret pushover_token
-
 # Enables the frontend
 frontend:
 
@@ -211,6 +205,10 @@ notify:
     name: iOS
     services:
       - service: ios_tristones_iphone6s
+  - name: pushover
+    platform: pushover
+    api_key: !secret pushover_key
+    user_key: !secret pushover_token
 
 alarm_control_panel:
   - platform: manual
