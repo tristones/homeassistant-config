@@ -46,6 +46,12 @@ ifttt:
 # Show links to resources in log and frontend
 # introduction:
 
+notify:
+  - name: pushover
+    platform: pushover
+    api_key: !secret pushover_key
+    user_key: !secret pushover_token
+
 # Enables the frontend
 frontend:
 
