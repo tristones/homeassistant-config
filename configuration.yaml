@@ -68,6 +68,19 @@ homekit:
       - light
       - media_player
       - switch
+    exclude_entities:
+      - switch.dafang_blue_led
+      - switch.dafang_ir_led
+      - switch.dafang_h264_rtsp_server
+      - switch.dafang_mjpeg_rtsp_server
+      - switch.dafang_ir_filter
+      - switch.dafang_motion_detection
+      - switch.dafang_motion_send_mail
+      - switch.dafang_motion_send_telegram
+      - switch.dafang_motion_tracking
+      - switch.dafang_night_mode
+      - switch.dafang_night_mode_auto
+      - switch.dafang_yellow_led
   entity_config:
     alarm_control_panel.home_alarm:
       code: 1568
@@ -205,10 +218,12 @@ notify:
     name: iOS
     services:
       - service: ios_tristones_iphone6s
-  - name: pushover
+  - name: ph
     platform: pushover
     api_key: !secret pushover_key
     user_key: !secret pushover_token
+    services:
+      - service: ph
 
 alarm_control_panel:
   - platform: manual
@@ -288,6 +303,22 @@ logger:
 
 # Cloud
 cloud:
+
+input_boolean:
+  irrigate_switch:
+    name: "草坪手动浇灌" 
+    initial: off
+    icon: mdi:water-pump
+
+input_slider:
+  lawn_timer_minutes:
+    name: "分钟"
+    initial: 2
+    min: 1
+    max: 15
+    step: 1
+    icon: mdi:timer
+
 
 group: !include groups.yaml
 automation: !include automations.yaml

@@ -60,13 +60,13 @@
     - condition: state
       entity_id: alarm_control_panel.home_alarm
       state: armed_away
-    - condition: template
-      value_template: >
-        {%- if states.automation.alarm_away.attributes.last_triggered -%}
-          {{ (as_timestamp(now()) - as_timestamp(states.automation.alarm_away.attributes.last_triggered)) > 300 }}
-        {%- else -%}
-          true
-        {%- endif -%}
+    # - condition: template
+    #   value_template: >
+    #     {%- if states.automation.alarm_away.attributes.last_triggered -%}
+    #       {{ (as_timestamp(now()) - as_timestamp(states.automation.alarm_away.attributes.last_triggered)) > 300 }}
+    #     {%- else -%}
+    #       true
+    #     {%- endif -%}
   action:
     - service: camera.snapshot
       data_template:
@@ -82,7 +82,21 @@
           {%- elif trigger.platform == "state" -%}
             /config/downloads/camera/livingroom_{{ now().strftime("%Y%m%d_%H%M%S") }}.jpg
           {%- endif -%}
-    - service: notify.ios_tristones_iphone6s
+    # - service: camera.snapshot
+    #   data_template:
+    #     entity_id: >
+    #       {%- if trigger.platform == "mqtt" -%}
+    #         camera.dafang3
+    #       {%- elif trigger.platform == "state" -%}
+    #         camera.livingroom
+    #       {%- endif -%}
+    #     filename: >
+    #       {%- if trigger.platform == "mqtt" -%}
+    #         /config/downloads/camera/pushover_latest.jpg
+    #       {%- elif trigger.platform == "state" -%}
+    #         /config/downloads/camera/pushover_latest.jpg
+    #       {%- endif -%}
+    - service: notify.ph
       data_template:
         title: '运动感知触发 {{ now().strftime("%Y-%m-%d %H:%M:%S") }}'
         message: >
@@ -91,16 +105,60 @@
           {%- elif trigger.platform == "state" -%}
             一楼客厅摄像头 
           {%- endif -%}
-        # data:
-        #   push:
-        #     sound: "US-EN-Alexa-Motion-Detected-Generic.wav"
-        # data:
-        #   push:
-        #     category: camera
-        #   entity_id: camera.dafang3
-        #   attachment:
-        #     url: 'http://45.32.113.129:6633{{states.camera.dafang3.attributes.entity_picture}}'
-        #     content-type: jpg
+        data:
+          sound: echo
+          priority: 2
+          expire: '30'
+          retry: '30'
+    - service: ifttt.trigger
+      data_template: 
+        event: 'presence_arrival'
+        value1: '二楼'
+
+- id: 'lawn irrigation 5 minutes'
+  alias: lawn irrigation 5 minutes
+  initial_state: 'off'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.irrigate_switch
+      from: 'off'
+      to: 'on'
+  action:
+  - service: logbook.log
+    data_template:
+      name: "irrigation: "
+      message: "start"
+  - service: switch.turn_on
+    data:
+      entity_id: switch.4ch_1
+  - delay: '00:{{ states.input_slider.lawn_timer_minutes.state | int }}:00'
+  - service: switch.turn_off
+    data:
+      entity_id: switch.4ch_1
+  - service: homeassistant.toggle
+    entity_id: input_boolean.irrigate_switch
+
+- id: 'lawn irrigation daily'
+  alias: lawn irrigation daily before sunrise
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: "-00:45:00"
+  condition:
+    - condition: template
+      value_template: “{{ ( states.sensor.caiyun_alarm_precipitation.state | float  ) < 1 }}”
+  action:
+  - service: logbook.log
+    data_template:
+      name: "irrigation: "
+      message: "start"
+  - service: switch.turn_on
+    data:
+      entity_id: switch.4ch_1
+  - delay: '00:15:00'
+  - service: switch.turn_off
+    data:
+      entity_id: switch.4ch_1
 
 # - id: 'CCTV Motion Detected'
 #   alias: CCTV Motion Detected
@@ -164,7 +222,7 @@
           {%- elif trigger.entity_id == "binary_sensor.water_leak_sensor_158d00023ea336" -%}
             厨房漏水_时间 {{ now().strftime("%Y%m%d_%H%M%S") }}
           {%- endif -%}
-    - service: notify.ios_tristones_iphone6s
+    - service: notify.ph
       data_template:
         title: '漏水报警 {{ now().strftime("%Y-%m-%d %H:%M:%S") }}'
         message: >
@@ -175,6 +233,20 @@
           {%- elif trigger.entity_id == "binary_sensor.water_leak_sensor_158d00023ea336" -%}
             厨房漏水,总进水电磁阀将关闭 
           {%- endif -%}
+        data:
+          sound: echo
+          priority: 1
+    # - service: notify.ios_tristones_iphone6s
+    #   data_template:
+    #     title: '漏水报警 {{ now().strftime("%Y-%m-%d %H:%M:%S") }}'
+    #     message: >
+    #       {%- if trigger.entity_id == "binary_sensor.water_leak_sensor_158d00023aa627" -%}
+    #         二楼台盆漏水,总进水电磁阀将关闭 
+    #       {%- elif trigger.entity_id == "binary_sensor.water_leak_sensor_158d00023ea23b" -%}
+    #         二楼卫生间漏水,总进水电磁阀将关闭 
+    #       {%- elif trigger.entity_id == "binary_sensor.water_leak_sensor_158d00023ea336" -%}
+    #         厨房漏水,总进水电磁阀将关闭 
+    #       {%- endif -%}
     # - service: switch.turn_off
     #   entity_id: switch.plug_158d000268db5c
 
@@ -269,28 +341,50 @@
           {%- elif trigger.entity_id == "binary_sensor.nvr_motion_8" -%}
             camera.frontdoor motion detected at {{ now().strftime("%Y%m%d_%H%M%S") }}
           {%- endif -%}
-    - service: notify.ios_tristones_iphone6s
+    - service: notify.ph
       data_template:
         title: '运动感知触发 {{ now().strftime("%Y-%m-%d %H:%M:%S") }}'
         message: >
           {%- if trigger.entity_id == "binary_sensor.nvr_line_crossing_1" -%}
             西边落地窗摄像头 
-          {%- elif trigger.entity_id == "binary_sensor.nvr_motion_2" or trigger.entity_id == "binary_sensor.nvr_line_crossing_2" -%}
+          {%- elif trigger.entity_id == "binary_sensor.nvr_line_crossing_2" -%}
             空调外机摄像头
-          {%- elif trigger.entity_id == "binary_sensor.nvr_motion_3" or trigger.entity_id == "binary_sensor.nvr_line_crossing_3" -%}
+          {%- elif trigger.entity_id == "binary_sensor.nvr_line_crossing_3" -%}
             前院摄像头
-          {%- elif trigger.entity_id == "binary_sensor.nvr_motion_4" or trigger.entity_id == "binary_sensor.nvr_line_crossing_4"  -%}
+          {%- elif trigger.entity_id == "binary_sensor.nvr_line_crossing_4"  -%}
             后门摄像头
-          {%- elif trigger.entity_id == "binary_sensor.nvr_motion_5" or trigger.entity_id == "binary_sensor.nvr_line_crossing_5" -%}
+          {%- elif trigger.entity_id == "binary_sensor.nvr_line_crossing_5" -%}
             厨房外摄像头
-          {%- elif trigger.entity_id == "binary_sensor.nvr_motion_6" -%}
+          {%- elif trigger.entity_id == "binary_sensor.nvr_line_crossing_6" -%}
             东外墙摄像头
-          {%- elif trigger.entity_id == "binary_sensor.nvr_motion_8" -%}
-            前门摄像头
           {%- endif -%}
         data:
-          push:
-            badge: 5
+          sound: echo
+          priority: 2
+          expire: '30'
+          retry: '30'
+    # - service: notify.ios_tristones_iphone6s
+    #   data_template:
+    #     title: '运动感知触发 {{ now().strftime("%Y-%m-%d %H:%M:%S") }}'
+    #     message: >
+    #       {%- if trigger.entity_id == "binary_sensor.nvr_line_crossing_1" -%}
+    #         西边落地窗摄像头 
+    #       {%- elif trigger.entity_id == "binary_sensor.nvr_motion_2" or trigger.entity_id == "binary_sensor.nvr_line_crossing_2" -%}
+    #         空调外机摄像头
+    #       {%- elif trigger.entity_id == "binary_sensor.nvr_motion_3" or trigger.entity_id == "binary_sensor.nvr_line_crossing_3" -%}
+    #         前院摄像头
+    #       {%- elif trigger.entity_id == "binary_sensor.nvr_motion_4" or trigger.entity_id == "binary_sensor.nvr_line_crossing_4"  -%}
+    #         后门摄像头
+    #       {%- elif trigger.entity_id == "binary_sensor.nvr_motion_5" or trigger.entity_id == "binary_sensor.nvr_line_crossing_5" -%}
+    #         厨房外摄像头
+    #       {%- elif trigger.entity_id == "binary_sensor.nvr_motion_6" -%}
+    #         东外墙摄像头
+    #       {%- elif trigger.entity_id == "binary_sensor.nvr_motion_8" -%}
+    #         前门摄像头
+    #       {%- endif -%}
+    #     data:
+    #       push:
+    #         badge: 5
 
 - id: alarm_cctv_home
   alias: 'alarm_cctv_home'
@@ -370,7 +464,7 @@
           {%- elif trigger.entity_id == "binary_sensor.nvr_line_crossing_6" -%}
             camera.eastwall motion detected at {{ now().strftime("%Y%m%d_%H%M%S") }}
           {%- endif -%}
-    - service: notify.ios_tristones_iphone6s
+    - service: notify.ph
       data_template:
         title: '运动感知触发 {{ now().strftime("%Y-%m-%d %H:%M:%S") }}'
         message: >
@@ -388,8 +482,30 @@
             东外墙摄像头
           {%- endif -%}
         data:
-          push:
-            badge: 5
+          sound: echo
+          priority: 2
+          expire: '30'
+          retry: '30'
+    # - service: notify.ios_tristones_iphone6s
+    #   data_template:
+    #     title: '运动感知触发 {{ now().strftime("%Y-%m-%d %H:%M:%S") }}'
+    #     message: >
+    #       {%- if trigger.entity_id == "binary_sensor.nvr_line_crossing_1" -%}
+    #         西边落地窗摄像头 
+    #       {%- elif trigger.entity_id == "binary_sensor.nvr_line_crossing_2" -%}
+    #         空调外机摄像头
+    #       {%- elif trigger.entity_id == "binary_sensor.nvr_line_crossing_3" -%}
+    #         前院摄像头
+    #       {%- elif trigger.entity_id == "binary_sensor.nvr_line_crossing_4"  -%}
+    #         后门摄像头
+    #       {%- elif trigger.entity_id == "binary_sensor.nvr_line_crossing_5" -%}
+    #         厨房外摄像头
+    #       {%- elif trigger.entity_id == "binary_sensor.nvr_line_crossing_6" -%}
+    #         东外墙摄像头
+    #       {%- endif -%}
+    #     data:
+    #       push:
+    #         badge: 5
 
 - alias: test_speech
   initial_state: 'off'
@@ -419,6 +535,13 @@
       data_template:
         name: "TTS: "
         message: 'badidu tts test actived at {{ now().strftime("%Y%m%d_%H%M%S") }}'
+    - service: notify.ph
+      data_template:
+        message: "This is the message"
+        title: "Title of message"
+        data:
+          sound: pianobar
+          priority: 1
 
 - id: save_camera_images
   alias: 'save_cctv_snapshot'

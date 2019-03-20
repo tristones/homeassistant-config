@@ -2,6 +2,8 @@
 !.gitignore
 **/downloads
 .storage/*
+**/.storage
+**/.cloud
 .cloud/*
 tts/*
 .uuid
@@ -16,8 +18,10 @@ home-assistant.env
 home-assistant.*
 secrets.yaml
 known_devices.yaml
+._known_devices.yaml
 entity_registry.yam
 airsonos.xml
+.saswell*
 logs
 *.log
 deps
