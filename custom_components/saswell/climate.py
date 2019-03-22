@@ -13,9 +13,11 @@ from datetime import timedelta
 import time
 import voluptuous as vol
 
-from homeassistant.components.climate import (
-    ClimateDevice, SUPPORT_TARGET_TEMPERATURE, SUPPORT_AWAY_MODE,
-     SUPPORT_ON_OFF, SUPPORT_OPERATION_MODE)
+from homeassistant.components.climate import (ClimateDevice)
+from homeassistant.components.climate.const import (
+    SUPPORT_TARGET_TEMPERATURE,
+    SUPPORT_AWAY_MODE, SUPPORT_ON_OFF,
+    SUPPORT_OPERATION_MODE)
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.const import (
     CONF_NAME, CONF_USERNAME, CONF_PASSWORD, CONF_SCAN_INTERVAL,
@@ -240,7 +242,7 @@ class SaswellData():
             for dev in json:
                 status = dev['status'].split(',')
                 devs.append({'is_on': status[1] == '1',
-                             'away': status[5] == '1', #8?
+                             'away': status[5] == '1',  # 8?
                              'temperature': float(status[2]),
                              'target_temperature': float(status[3]),
                              'online': dev['online'] == '1',
@@ -288,7 +290,7 @@ class SaswellData():
                 text = await response.text()
             _LOGGER.info("Get token: %s", text)
             start = text.find('token:')
-            if start == -1 :
+            if start == -1:
                 return None
 
             start += 6
