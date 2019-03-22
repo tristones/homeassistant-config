@@ -115,8 +115,8 @@
         event: 'presence_arrival'
         value1: '二楼'
 
-- id: 'lawn irrigation 5 minutes'
-  alias: lawn irrigation 5 minutes
+- id: 'lawn irrigation x minutes'
+  alias: lawn irrigation x minutes
   initial_state: 'off'
   trigger:
     - platform: state
