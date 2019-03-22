@@ -310,7 +310,7 @@ input_boolean:
     initial: off
     icon: mdi:water-pump
 
-input_slider:
+input_number:
   lawn_timer_minutes:
     name: "分钟"
     initial: 2

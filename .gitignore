@@ -19,7 +19,7 @@ home-assistant.*
 secrets.yaml
 known_devices.yaml
 ._known_devices.yaml
-entity_registry.yam
+entity_registry.yaml
 airsonos.xml
 .saswell*
 logs
