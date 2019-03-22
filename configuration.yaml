@@ -55,10 +55,6 @@ frontend:
 # Enables configuration UI
 config:
 
-auth_providers:
-   - type: legacy_api_password
-     api_password: !secret http_password
-
 # http:
 #   api_password: !secret http_password
 
