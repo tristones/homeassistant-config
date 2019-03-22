@@ -16,6 +16,8 @@ automation.alarm_cctv_home:
   friendly_name: '在家状态监控'
 automation.alarm_leak:
   friendly_name: '漏水报警'
+automation.lawn_irrigation_x_minutes:
+  friendly_name: '手动浇灌自动化'
 # binary_sensor.PIR1:
 #   hidden: true
 climate.saswell_10382435cc05169d:

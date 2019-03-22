@@ -309,7 +309,7 @@ cloud:
 
 input_boolean:
   irrigate_switch:
-    name: "草坪手动浇灌" 
+    name: "草坪手动浇灌开关" 
     initial: off
     icon: mdi:water-pump
 
