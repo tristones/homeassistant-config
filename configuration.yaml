@@ -10,6 +10,9 @@ homeassistant:
     - '/config/downloads'
     - '/tmp'
     - '/config/downloads/camera/'
+  auth_providers:
+    - type: legacy_api_password
+      api_password: !secret http_password
   # packages: 
   #   gaodetraffic: !include packages/gaodetraffic.yaml
   #   caiyunweatherse: !include packages/caiyunweatherse.yaml
