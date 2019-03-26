@@ -309,14 +309,25 @@ cloud:
 
 input_boolean:
   irrigate_switch:
-    name: "草坪手动浇灌开关" 
+    name: "草坪手动开关" 
+    initial: off
+    icon: mdi:water-pump
+  plant_switch:
+    name: "微喷手动开关" 
     initial: off
     icon: mdi:water-pump
 
 input_number:
   lawn_timer_minutes:
-    name: "浇灌时长(分钟)"
-    initial: 2
+    name: "草坪浇灌时长"
+    initial: 5
+    min: 1
+    max: 15
+    step: 1
+    icon: mdi:timer
+  plant_timer_minutes:
+    name: "微喷浇灌时长"
+    initial: 5
     min: 1
     max: 15
     step: 1

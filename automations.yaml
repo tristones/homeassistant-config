@@ -127,7 +127,7 @@
   - service: logbook.log
     data_template:
       name: "irrigation: "
-      message: "start"
+      message: "manual lawn start"
   - service: switch.turn_on
     data:
       entity_id: switch.4ch_1
@@ -137,6 +137,36 @@
       entity_id: switch.4ch_1
   - service: homeassistant.toggle
     entity_id: input_boolean.irrigate_switch
+
+- id: 'plant irrigation x minutes'
+  alias: plant irrigation x minutes
+  initial_state: 'off'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.plant_switch
+      from: 'off'
+      to: 'on'
+  action:
+  - service: logbook.log
+    data_template:
+      name: "irrigation: "
+      message: "manual plant start"
+  - service: switch.turn_on
+    data:
+      entity_id: switch.4ch_2
+  - delay: '00:{{ states.input_number.lawn_timer_minutes.state | int }}:00'
+  - service: switch.turn_off
+    data:
+      entity_id: switch.4ch_2
+  - service: switch.turn_on
+    data:
+      entity_id: switch.4ch_3
+  - delay: '00:{{ states.input_number.lawn_timer_minutes.state | int }}:00'
+  - service: switch.turn_off
+    data:
+      entity_id: switch.4ch_3
+  - service: homeassistant.toggle
+    entity_id: input_boolean.plant_switch
 
 - id: 'lawn irrigation daily'
   alias: lawn irrigation daily before sunrise
