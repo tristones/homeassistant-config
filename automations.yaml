@@ -113,7 +113,12 @@
     - service: ifttt.trigger
       data_template: 
         event: 'presence_arrival'
-        value1: '二楼'
+        value1: >
+          {%- if trigger.platform == "mqtt" -%}
+            二楼客厅摄像头
+          {%- elif trigger.platform == "state" -%}
+            一楼客厅摄像头 
+          {%- endif -%}
 
 - id: 'lawn irrigation x minutes'
   alias: lawn irrigation x minutes
