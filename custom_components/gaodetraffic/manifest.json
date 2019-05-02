@@ -1,0 +1,8 @@
+{
+        "domain": "gaodetraffic",
+        "name": "gaodetraffic custom component",
+        "documentation": "https://github.com/",
+        "requirements": [],
+        "dependencies": [],
+        "codeowners": []
+}
