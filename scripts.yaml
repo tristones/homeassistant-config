@@ -27,6 +27,6 @@ classify_images:
     - condition: state
       entity_id: switch.4ch_4
       state: 'on'
-    - service: switch.turn_ff
+    - service: switch.turn_off
       data:
-        entity_id: switch.4ch_
+        entity_id: switch.4ch_4
