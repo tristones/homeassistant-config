@@ -1,16 +1,32 @@
 #################################################################
 ## Scripts
 #################################################################
-  initialize_hass:
-    alias: 'Initialize HASS after restart'
-    sequence:
-      - service: homeassistant.turn_on
-        entity_id: script.classify_images
-  classify_images:
-    alias: 'Process all images'
-    sequence:
-      - service: image_processing.scan
-        entity_id:
-          - image_processing.deepstack_dafang3
-          - image_processing.deepstack_livingroom
-          - image_processing.deepstack_frontdoor
+initialize_hass:
+  alias: 'Initialize HASS after restart'
+  sequence:
+    - service: homeassistant.turn_on
+      entity_id: script.classify_images
+classify_images:
+  alias: 'Process all images'
+  sequence:
+    - service: image_processing.scan
+      entity_id:
+        - image_processing.deepstack_dafang3
+        - image_processing.deepstack_livingroom
+        - image_processing.deepstack_frontdoor
+4ch4_on:
+  sequence:
+    - condition: state
+      entity_id: switch.4ch_4
+      state: 'off'
+    - service: switch.turn_on
+      data:
+        entity_id: switch.4ch_4
+4ch4_off:
+  sequence:
+    - condition: state
+      entity_id: switch.4ch_4
+      state: 'on'
+    - service: switch.turn_ff
+      data:
+        entity_id: switch.4ch_

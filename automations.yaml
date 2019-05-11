@@ -133,6 +133,9 @@
     data_template:
       name: "irrigation: "
       message: "manual lawn start"
+  - service: script.4ch4_on
+    entity_id: script.4ch4_on
+  - delay: '00:00:03'
   - service: switch.turn_on
     data:
       entity_id: switch.4ch_1
@@ -140,6 +143,9 @@
   - service: switch.turn_off
     data:
       entity_id: switch.4ch_1
+  - delay: '00:00:03'
+  - service: script.4ch4_off
+    entity_id: script.4ch4_off
   - service: homeassistant.toggle
     entity_id: input_boolean.irrigate_switch
 
@@ -156,6 +162,9 @@
     data_template:
       name: "irrigation: "
       message: "manual plant start"
+  - service: script.4ch4_on
+    entity_id: script.4ch4_on
+  - delay: '00:00:03'
   - service: switch.turn_on
     data:
       entity_id: switch.4ch_2
@@ -170,6 +179,9 @@
   - service: switch.turn_off
     data:
       entity_id: switch.4ch_3
+  - delay: '00:00:03'
+  - service: script.4ch4_off
+    entity_id: script.4ch4_off
   - service: homeassistant.toggle
     entity_id: input_boolean.plant_switch
 
