@@ -111,7 +111,7 @@ climate:
   - platform: smartir
     name: Office AC
     unique_id: office_ac
-    device_code: 1081
+    device_code: 1080
     controller_data: 192.168.2.82
     temperature_sensor: sensor.temperature
     humidity_sensor: sensor.humidity
