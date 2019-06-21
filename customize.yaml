@@ -73,18 +73,18 @@ binary_sensor.water_leak_sensor_158d00023ea336:
 binary_sensor.water_leak_sensor_158d00023ea23b:
   friendly_name: '二楼卫生间漏水'
 sensor.humidity_158d000245a6e0:
-  friendly_name: '二楼湿度'
+  friendly_name: '书房湿度'
 sensor.pressure_158d000245a6e0:
-  friendly_name: '二楼气压'
+  friendly_name: '书房气压'
 sensor.temperature_158d000245a6e0:
-  friendly_name: '二楼温度'
+  friendly_name: '书房温度'
 sensor.illumination_7c49eb84897b:
   friendly_name: '照度1'
 sensor.illumination_7c49eb86104e:
   friendly_name: '照度2'
 sensor.humidity_158d0002325270:
-  friendly_name: '一楼湿度'
+  friendly_name: '影音室湿度'
 sensor.pressure_158d0002325270:
-  friendly_name: '一楼气压'
+  friendly_name: '影音室气压'
 sensor.temperature_158d0002325270:
-  friendly_name: '一楼温度'
+  friendly_name: '影音室温度'
