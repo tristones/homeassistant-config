@@ -4,3 +4,7 @@
     command_topic: hassmart/switch/hassmart_1key_module_4019A2_1/set
     qos: 1
     retain: false
+
+  - platform: broadlink
+    host: 192.168.2.82
+    mac: 'c8:f7:42:25:2b:43'

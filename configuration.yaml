@@ -108,6 +108,14 @@ climate:
     password: !secret saswell_pass
     scan_interval: 300
     # devices: 7
+  - platform: smartir
+    name: Office AC
+    unique_id: office_ac
+    device_code: 1080
+    controller_data: 192.168.2.82
+    temperature_sensor: sensor.temperature
+    humidity_sensor: sensor.humidity
+    power_sensor: binary_sensor.ac_power
     
 influxdb:
   host: localhost
@@ -333,6 +341,7 @@ input_number:
     step: 1
     icon: mdi:timer
 
+smartir:
 
 group: !include groups.yaml
 automation: !include automations.yaml
