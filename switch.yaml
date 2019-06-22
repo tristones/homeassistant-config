@@ -8,10 +8,12 @@
   - platform: broadlink
     host: 192.168.2.82
     mac: 'c8:f7:42:25:2b:43'
+    type: rm_mini
 
   - platform: broadlink
     host: 192.168.2.224
     mac: 'c8:f7:42:41:51:40'
+    type: rm_mini
 
   - platform: broadlink
     host: 192.168.2.210
