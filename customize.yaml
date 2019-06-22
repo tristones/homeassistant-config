@@ -24,6 +24,14 @@ automation.plant_irrigation_x_minutes:
 #   hidden: true
 climate.readingroom_ac_2:
   friendly_name: '书房空调'
+climate.avroom_ac:
+  friendly_name: '影音室空调'
+climate.xiaomi_ac:
+  friendly_name: '小米空调'
+climate.livingroom_ac:
+  friendly_name: '客厅空调'
+climate.bedroom_ac:
+  friendly_name: '主卧'
 climate.saswell_10382435cc05169d:
   friendly_name: '二楼客厅地暖'
 climate.saswell_10382435cc0517ba:
