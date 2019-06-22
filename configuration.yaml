@@ -111,7 +111,7 @@ climate:
   - platform: smartir
     name: ReadingRoom AC
     unique_id: readingroom_ac
-    device_code: 1080
+    device_code: 1082
     controller_data: 192.168.2.82
     temperature_sensor: sensor.temperature
     humidity_sensor: sensor.humidity
