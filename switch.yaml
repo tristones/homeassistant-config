@@ -15,4 +15,4 @@
 
   - platform: broadlink
     host: 192.168.2.210
-    mac: '	78:0f:77:00:8e:8b'
+    mac: '78:0f:77:00:8e:8b'
