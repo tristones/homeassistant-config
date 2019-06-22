@@ -34,26 +34,6 @@ from homeassistant.helpers.event import (
     async_track_state_change, async_track_time_interval)
 import homeassistant.helpers.config_validation as cv
 
-# from homeassistant.core import callback
-# from homeassistant.components.climate import (ClimateDevice)
-# from homeassistant.components.climate.const import (
-#     ATTR_CURRENT_TEMPERATURE, ATTR_FAN_MODE, ATTR_OPERATION_MODE,
-#     STATE_COOL, STATE_DRY, STATE_FAN_ONLY,
-#     STATE_HEAT, SUPPORT_FAN_MODE,
-#     SUPPORT_OPERATION_MODE, SUPPORT_TARGET_TEMPERATURE)
-# from homeassistant.components.sensor import (
-#     PLATFORM_SCHEMA, STATE_OFF
-#     )
-# from homeassistant.const import (
-#     TEMP_CELSIUS, ATTR_TEMPERATURE, ATTR_UNIT_OF_MEASUREMENT,
-#     CONF_NAME, CONF_HOST, CONF_MAC, CONF_TIMEOUT)
-# from homeassistant.helpers import condition
-# from homeassistant.helpers.event import (
-#     async_track_state_change, async_track_time_interval)
-# import homeassistant.helpers.config_validation as cv
-
-# REQUIREMENTS = ['broadlink', 'sensor']
-
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_TOLERANCE = 0.3
@@ -65,8 +45,8 @@ DEFAULT_RETRY = 3
 DEFAULT_MIN_TMEP = 17
 DEFAULT_MAX_TMEP = 30
 DEFAULT_STEP = 1
-DEFAULT_TEMP = 25
-DEFAULT_FAN = 'Low'
+DEFAULT_TEMP = 26
+DEFAULT_FAN = 'Middle'
 
 CONF_SENSOR = 'target_sensor'
 CONF_TARGET_TEMP = 'target_temp'

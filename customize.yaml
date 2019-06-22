@@ -22,6 +22,8 @@ automation.plant_irrigation_x_minutes:
   friendly_name: '微喷手动浇灌自动化'
 # binary_sensor.PIR1:
 #   hidden: true
+climate.readingroom_ac_2:
+  friendly_name: '书房空调'
 climate.saswell_10382435cc05169d:
   friendly_name: '二楼客厅地暖'
 climate.saswell_10382435cc0517ba:

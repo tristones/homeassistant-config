@@ -71,6 +71,7 @@ homekit:
       - light
       - media_player
       - switch
+      - climate
     exclude_entities:
       - switch.dafang_blue_led
       - switch.dafang_ir_led
@@ -84,6 +85,14 @@ homekit:
       - switch.dafang_night_mode
       - switch.dafang_night_mode_auto
       - switch.dafang_yellow_led
+      - climate.saswell_10382435cc05169d
+      - climate.saswell_10382435cc0517ba
+      - climate.saswell_10382435cc0bd732
+      - climate.saswell_10382435cc0bf000
+      - climate.saswell_10382435cc0d0960
+      - climate.saswell_10382435cc0d0bdb
+      - climate.saswell_10382435cc0d1870
+
   entity_config:
     alarm_control_panel.home_alarm:
       code: 1568
@@ -124,6 +133,13 @@ climate:
     target_sensor: sensor.temperature_158d000245a6e0
     target_temp: 26
     target_fan: Middle    
+  - platform: hitachi
+    name: avroom_ac
+    host: 192.168.2.224
+    mac: 'c8:f7:42:41:51:40' 
+    target_sensor: sensor.temperature_158d0002325270
+    target_temp: 26
+    target_fan: Middle   
     
 influxdb:
   host: localhost
