@@ -108,14 +108,21 @@ climate:
     password: !secret saswell_pass
     scan_interval: 300
     # devices: 7
-  - platform: smartir
-    name: ReadingRoom AC
-    unique_id: readingroom_ac
-    device_code: 1082
-    controller_data: 192.168.2.210
-    temperature_sensor: sensor.temperature_158d000245a6e0
-    humidity_sensor: sensor.humidity_158d000245a6e0
-    # power_sensor: binary_sensor.ac_power
+  # - platform: smartir
+  #   name: ReadingRoom AC
+  #   unique_id: readingroom_ac
+  #   device_code: 1082
+  #   controller_data: 192.168.2.210
+  #   temperature_sensor: sensor.temperature_158d000245a6e0
+  #   humidity_sensor: sensor.humidity_158d000245a6e0
+  #   # power_sensor: binary_sensor.ac_power
+  - platform: hitachi
+    name: readingroom_ac
+    host: 192.168.2.210
+    mac: '78:0f:77:00:8e:8b' 
+    target_sensor: sensor.temperature_158d000245a6e0
+    target_temp: 26
+    target_fan: Low    
     
 influxdb:
   host: localhost
