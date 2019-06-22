@@ -118,8 +118,9 @@ climate:
   #   # power_sensor: binary_sensor.ac_power
   - platform: hitachi
     name: readingroom_ac
-    host: 192.168.2.210
-    mac: '78:0f:77:00:8e:8b' 
+    host: 192.168.2.82
+    # mac: '78:0f:77:00:8e:8b' 
+    mac: 'c8:f7:42:25:2b:43' 
     target_sensor: sensor.temperature_158d000245a6e0
     target_temp: 26
     target_fan: Middle    
