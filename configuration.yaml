@@ -113,9 +113,9 @@ climate:
     unique_id: readingroom_ac
     device_code: 1082
     controller_data: 192.168.2.82
-    temperature_sensor: sensor.temperature
-    humidity_sensor: sensor.humidity
-    power_sensor: binary_sensor.ac_power
+    temperature_sensor: sensor.temperature_158d000245a6e0
+    humidity_sensor: sensor.humidity_158d000245a6e0
+    # power_sensor: binary_sensor.ac_power
     
 influxdb:
   host: localhost
