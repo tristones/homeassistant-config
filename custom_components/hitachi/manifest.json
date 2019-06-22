@@ -1,0 +1,8 @@
+{
+	"domain": "hitachi",
+	"name": "hitachi custom component",
+	"documentation": "https://github.com/",
+	"requirements": ['broadlink', 'sensor'],
+	"dependencies": [],
+	"codeowners": []
+}

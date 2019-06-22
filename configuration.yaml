@@ -122,7 +122,7 @@ climate:
     mac: '78:0f:77:00:8e:8b' 
     target_sensor: sensor.temperature_158d000245a6e0
     target_temp: 26
-    target_fan: Low    
+    target_fan: Middle    
     
 influxdb:
   host: localhost

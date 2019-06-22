@@ -17,13 +17,15 @@ import socket
 import voluptuous as vol
 
 from homeassistant.core import callback
-from homeassistant.components.climate import (
-    ATTR_CURRENT_TEMPERATURE, ATTR_FAN_MODE, ATTR_OPERATION_MODE,
-    PLATFORM_SCHEMA, STATE_COOL, STATE_DRY,
-    STATE_FAN_ONLY, STATE_HEAT, STATE_OFF, SUPPORT_FAN_MODE,
-    SUPPORT_OPERATION_MODE, SUPPORT_TARGET_TEMPERATURE,
-    ClimateDevice)
 
+from homeassistant.components.climate import (ClimateDevice, PLATFORM_SCHEMA)
+from homeassistant.components.climate.const import (
+    ATTR_CURRENT_TEMPERATURE, ATTR_FAN_MODE, ATTR_OPERATION_MODE,
+    STATE_COOL, STATE_DRY, STATE_HEAT,
+    STATE_FAN_ONLY, STATE_HEAT, SUPPORT_FAN_MODE,
+    SUPPORT_OPERATION_MODE, SUPPORT_TARGET_TEMPERATURE)
+from homeassistant.const import (
+    STATE_OFF, STATE_ON)
 from homeassistant.const import (
     TEMP_CELSIUS, ATTR_TEMPERATURE, ATTR_UNIT_OF_MEASUREMENT,
     CONF_NAME, CONF_HOST, CONF_MAC, CONF_TIMEOUT)
@@ -32,7 +34,25 @@ from homeassistant.helpers.event import (
     async_track_state_change, async_track_time_interval)
 import homeassistant.helpers.config_validation as cv
 
-REQUIREMENTS = ['broadlink', 'sensor']
+# from homeassistant.core import callback
+# from homeassistant.components.climate import (ClimateDevice)
+# from homeassistant.components.climate.const import (
+#     ATTR_CURRENT_TEMPERATURE, ATTR_FAN_MODE, ATTR_OPERATION_MODE,
+#     STATE_COOL, STATE_DRY, STATE_FAN_ONLY,
+#     STATE_HEAT, SUPPORT_FAN_MODE,
+#     SUPPORT_OPERATION_MODE, SUPPORT_TARGET_TEMPERATURE)
+# from homeassistant.components.sensor import (
+#     PLATFORM_SCHEMA, STATE_OFF
+#     )
+# from homeassistant.const import (
+#     TEMP_CELSIUS, ATTR_TEMPERATURE, ATTR_UNIT_OF_MEASUREMENT,
+#     CONF_NAME, CONF_HOST, CONF_MAC, CONF_TIMEOUT)
+# from homeassistant.helpers import condition
+# from homeassistant.helpers.event import (
+#     async_track_state_change, async_track_time_interval)
+# import homeassistant.helpers.config_validation as cv
+
+# REQUIREMENTS = ['broadlink', 'sensor']
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -62,7 +82,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_TARGET_FAN, default=DEFAULT_FAN): cv.string
 })
 
-SUPPORT_FLAGS = (SUPPORT_TARGET_TEMPERATURE | SUPPORT_OPERATION_MODE | SUPPORT_FAN_MODE)
+SUPPORT_FLAGS = (SUPPORT_TARGET_TEMPERATURE |
+                 SUPPORT_OPERATION_MODE | SUPPORT_FAN_MODE)
 
 
 @asyncio.coroutine
@@ -84,7 +105,9 @@ def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
         broadlink_device.auth()
     except socket.timeout:
         _LOGGER.error("Failed to connect to device")
-    async_add_devices([HitachiClimate(hass, name, target_temp, 'Low',  'off', broadlink_device, sensor_entity_id)])
+    async_add_devices([HitachiClimate(hass, name, target_temp,
+                                      'Low',  'off', broadlink_device, sensor_entity_id)])
+
 
 class HitachiClimate(ClimateDevice):
     """Representation of a Hitachi AC."""
@@ -92,7 +115,6 @@ class HitachiClimate(ClimateDevice):
     def __init__(self, hass, name, target_temperature,
                  current_fan_mode, current_operation,
                  broadlink_device, sensor_entity_id):
-
         """Initialize the climate device."""
         self.hass = hass
         self._name = name if name else DEFAULT_NAME
@@ -101,7 +123,8 @@ class HitachiClimate(ClimateDevice):
         self._current_operation = current_operation
         self._last_operation = current_operation
         self._fan_list = ['Low', 'Middle', 'High']
-        self._operation_list = [STATE_COOL, STATE_HEAT, STATE_DRY, STATE_FAN_ONLY, STATE_OFF]
+        self._operation_list = [STATE_COOL, STATE_HEAT,
+                                STATE_DRY, STATE_FAN_ONLY, STATE_OFF]
         self._max_temp = DEFAULT_MAX_TMEP
         self._min_temp = DEFAULT_MIN_TMEP
         self._target_temp_step = DEFAULT_STEP
@@ -198,8 +221,8 @@ class HitachiClimate(ClimateDevice):
         self._current_operation = operation_mode
         self._sendpacket('operation')
         if self._current_operation != STATE_OFF:
-           self._sendpacket('temperature')
-           self._sendpacket('fan')
+            self._sendpacket('temperature')
+            self._sendpacket('fan')
         self.schedule_update_ha_state()
         self._last_operation = operation_mode
 
@@ -216,7 +239,6 @@ class HitachiClimate(ClimateDevice):
 
         self._sendpacket('temperature')
         self.schedule_update_ha_state()
-
 
     def _sendpacket(self, mode, retry=2):
         """Send packet to device."""
@@ -270,21 +292,21 @@ class HitachiClimate(ClimateDevice):
         }
 
         packet = None
-        if mode=='fan':
-           if self._current_operation==STATE_DRY or self._current_operation==STATE_OFF:
-               return True
-           packet = fan[self._current_operation][self._current_fan_mode]
+        if mode == 'fan':
+            if self._current_operation == STATE_DRY or self._current_operation == STATE_OFF:
+                return True
+            packet = fan[self._current_operation][self._current_fan_mode]
 
-        if mode=='operation':
-           if self._current_operation==STATE_OFF:
-              if self._last_operation==STATE_OFF:
-                  return TRUE
-              packet = oper_off[self._last_operation]
-           else :
-              packet = oper[self._current_operation]
+        if mode == 'operation':
+            if self._current_operation == STATE_OFF:
+                if self._last_operation == STATE_OFF:
+                    return TRUE
+                packet = oper_off[self._last_operation]
+            else:
+                packet = oper[self._current_operation]
 
-        if mode=='temperature':
-           packet = temp[int(self._target_temperature) - self._min_temp]
+        if mode == 'temperature':
+            packet = temp[int(self._target_temperature) - self._min_temp]
 
         if packet is None:
             _LOGGER.debug("Empty packet")
