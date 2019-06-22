@@ -144,19 +144,21 @@ climate:
     name: xiaomi_ac
     host: 192.168.2.61
     mac: 'c8:f7:42:41:3f:bb' 
-    # target_sensor: sensor.temperature_158d0002325270
+    target_sensor: sensor.temperature_158d0002325270
     target_temp: 26
     target_fan: Middle  
   - platform: hitachi
     name: livingroom_ac
     host: 192.168.2.210
     mac: '78:0f:77:00:8e:8b' 
+    target_sensor: sensor.temperature_158d0002325270
     target_temp: 26
     target_fan: Middle  
   - platform: hitachi
     name: bedroom_ac
     host: 192.168.2.48
     mac: 'c8:f7:42:25:36:ff' 
+    target_sensor: sensor.temperature_158d0002325270
     target_temp: 26
     target_fan: Middle  
     
