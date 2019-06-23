@@ -66,6 +66,8 @@ switch.plug_158d0002532333:
   friendly_name: '米高梅'
 switch.xiyifang:
   friendly_name: '洗衣房灯'
+switch.xiyifang_4019a2:
+  friendly_name: '洗衣房灯'
 switch.bs1:
   friendly_name: '庭院灭蚊灯'
 switch.wall_switch_ln_158d000282c662:
