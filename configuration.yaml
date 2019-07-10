@@ -39,10 +39,10 @@ mqtt:
 
 xiaomi_aqara:
   gateways:
-    - mac: 7C49EB84897B
-      key: UFAC9RFMV24R39QF
-    - mac: 7C49EB86104E
-      key: NSCT47U3M3039UKS
+    - mac: !secret aqara_mac1
+      key: !secret aqara_key1
+    - mac: !secret aqara_mac2
+      key: !secret aqara_key2
     
 ifttt:
   key: !secret ifttt_key
